@@ -3,7 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from kivymd.uix import MDAdaptiveWidget
 from kivy.uix.screenmanager import ScreenManager
-from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
+from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, NumericProperty
 import random
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 from kivymd.uix.card import MDCard
@@ -14,8 +14,9 @@ Window.size = (360,700)
 
 
 class Player():
-    def __init__(self,name,off,deff,reb, att_three,three_dist):
+    def __init__(self,name,pos,off,deff,reb, att_three,three_dist):
         self.name = name
+        self.pos = pos
         self.off = off
         self.deff = deff
         self.stats = 0
@@ -300,19 +301,19 @@ class Game():
 
 
 
-pg1 = Player("Dee Dee Smith", 75, 80,75, 77, .3)
-sg1 = Player("Roger Huntley", 61,80,75, 90, .45)
-sf1 = Player("Malcolm Smith", 79 ,80,77, 72, .2)
-pf1 = Player("George Fant", 79 ,80, 75, 65, .1)
-c1 = Player("Alex Poythresse", 88,80, 80, 65, .05)
+pg1 = Player("Dee Dee Smith", "PG", 75, 80,75, 77, .3)
+sg1 = Player("Roger Huntley","SG", 61,80,75, 90, .45)
+sf1 = Player("Malcolm Smith", "SF",79 ,80,77, 72, .2)
+pf1 = Player("George Fant", "PF",79 ,80, 75, 65, .1)
+c1 = Player("Alex Poythresse", "C", 88,80, 80, 65, .05)
 
 team1 = Team("Hilltoppers", pg1,sg1,sf1,pf1,c1)
 
-pg2 = Player("Dimes McGee", 75, 80, 75, 77, .3)
-sg2 = Player("Shooter McGavock", 75,80, 75, 90, .45)
-sf2 = Player("Samuel Driver", 75 ,80, 75, 72, .2)
-pf2 = Player("Big Earl", 75 ,80, 75, 65, .1)
-c2 = Player("Simon Tower", 75,80, 75, 65, .05)
+pg2 = Player("Dimes McGee", "PG", 75, 80, 75, 77, .3)
+sg2 = Player("Shooter McGavock", "SG", 75,80, 75, 90, .45)
+sf2 = Player("Samuel Driver", "SF", 75 ,80, 75, 72, .2)
+pf2 = Player("Big Earl", "PF",75 ,80, 75, 65, .1)
+c2 = Player("Simon Tower", "C",75,80, 75, 65, .05)
 
 team2= Team("Governors", pg2,sg2,sf2,pf2,c2)
 game = Game(team1, team2)
@@ -333,6 +334,9 @@ class StartPage(Screen, MDAdaptiveWidget):
 
 class TeamPage(Screen, MDAdaptiveWidget):
 
+    def test():
+        print("Hi")
+
     def edit_player(self, player):
         self.manager.get_screen("edit_player").player = player
 
@@ -352,6 +356,7 @@ class TeamPage(Screen, MDAdaptiveWidget):
     def calc_total_att(self):
         att_count = 750 - (pg1.off+pg1.deff+sg1.off+sg1.deff+sf1.off+sf1.deff+pf1.off+pf1.deff+c1.off+c1.deff)
         return att_count
+    team = team1
     ovr2 = calc_overall2()
     att_count = 750
     pg1_name = StringProperty(" ")
@@ -467,7 +472,52 @@ class TeamPage(Screen, MDAdaptiveWidget):
 
 
 class EditPage(Screen, MDAdaptiveWidget):
-    player = team1.pg
+    player_to_edit = pg1
+    player_name = StringProperty(" ")
+    player_position = StringProperty(" ")
+    name_input = "Name Here"
+    off_slider = 0
+    deff_slider = 0
+    rebounding_slider = 0
+    three_slider = 0
+    three_dist_slider = 0
+    
+    def on_name_input(self,widget):
+        self.name_input = widget.text
+    
+    def on_off_slider(self, widget):
+        self.off_slider = int(widget.value)
+        
+
+    def on_deff_slider(self, widget):
+        self.deff_slider = int(widget.value)
+        
+
+    def on_rebounding_slider(self, widget):
+        self.rebounding_slider = int(widget.value)
+
+    def on_three_slider(self, widget):
+        self.three_slider = int(widget.value)
+
+    def on_three_dist_slider(self, widget):
+        self.three_dist_slider = int(widget.value)
+        
+        
+        
+
+    def update(self, player):
+        self.player_to_edit = player
+        self.player_name = player.name
+        self.player_position = player.pos
+
+    def save(self):
+        if self.name_input != "Name Here":
+            self.player_to_edit.name = self.name_input
+        self.player_to_edit.off = self.off_slider
+        self.player_to_edit.deff = self.deff_slider
+        self.player_to_edit.reb = self.rebounding_slider
+        self.player_to_edit.att_three = self.three_slider
+        self.player_to_edit.three_dist = self.three_dist_slider       
 
 
 class ResultsPage(Screen, MDAdaptiveWidget):
@@ -556,6 +606,7 @@ class PostStatsPage(Screen, MDAdaptiveWidget):
         self.threes3 = str(team.sf.three_made) + "/" +str(team.sf.three_attempt)
         self.threes4 = str(team.pf.three_made) + "/" +str(team.pf.three_attempt)
         self.threes5 = str(team.c.three_made) + "/" +str(team.c.three_attempt)
+        
 
 
 
@@ -570,10 +621,15 @@ Use www.trello.com/D1Hoops to provide feedback and report bugs.
 
 .................."""
 
+
+class MD3Card(MDCard, RoundedRectangularElevationBehavior):
+    pass
+
+
 class TestApp(MDApp):
     def build(self):
         self.theme_cls.primary_palette = "Blue"
-        #self.theme_cls.accent_palette = "Red"
+        self.theme_cls.accent_palette = "Orange"
         #self.theme_cls.theme_style="Dark"
         #return Builder.load_file('test.kv')
 

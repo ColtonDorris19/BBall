@@ -1,4 +1,6 @@
 #: import get_color_from_hex kivy.utils.get_color_from_hex
+
+
 WindowManager:
     StartPage:
     TeamPage:
@@ -8,6 +10,10 @@ WindowManager:
     SettingsPage:
     EditPage:
 
+<MD3Card>:
+    style: "elevated"
+    elevation: 6
+    
 <StartPage>:
     name: "start"
     MDLabel:
@@ -48,253 +54,410 @@ WindowManager:
 
 <TeamPage>:
     name: "team"
-    BoxLayout:
-        background_color: (45/255), (45/255), (50/255), .88
-        canvas.before:
-            Color:
-                rgba: self.background_color
-            Rectangle:
-                size: self.size
-                pos: self.pos
-        orientation: "horizontal"
-        BoxLayout:
+    md_bg_color: 0,0,0,.78
+    GridLayout:
+        cols: 1
+        size_hint: 1,1
+        spacing: "10dp"
+        padding: "8dp"
+        
+        MDLabel:
+            text: "Edit Hilltoppers\' Roster"
+            color: 1,1,1,1
+            #bold: True
+            font_size: 22
+            pos_hint: {"x":.02, "y":0}
+            height: "75dp"
+
+        MD3Card:
+            pos_hint: {"center_x":.5, "top":.8}
+            size_hint: 1, None
+            height: "250dp"
+            spacing: 5
+            padding: 10
+            md_bg_color: .35,.35,.35,1
+            radius: 10
             orientation: "vertical"
             Label:
-                background_color: (100/255), (100/255), (105/255), 1
-                canvas.before:
-                    Color:
-                        rgba: self.background_color
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-                text: "Create your team"
-                font_size: 30
-            BoxLayout:
-                id: pg1
-                orientation: "horizontal"
-                TextInput:
-                    id: pg1_name
-                    size_hint: .4, .4
-                    hint_text: "Dee Dee Smith"
-                    multiline: False
-                    on_text: root.pg1_name_val(self)
-                MDRaisedButton:
-                    text: "Advanced Edit"
-                    on_release:
+                size_hint: .5,None
+                height: "20dp"
+                text: "Starters"
+                font_size: 12
+                color: .8,.8,.8,1
+                pos_hint: {"center_x": .5, "y":0}
+            GridLayout:
+                cols: 2
+                
+                MDLabel:
+                    size_hint: .85,None
+                    height: "15dp"
+                    text: root.team.pg.name
+                    font_size: 14
+                    color: 1,1,1,1
+                    pos_hint: {"x": 0, "y":0}
+                MDLabel:
+                    size_hint: .15,None
+                    height: "15dp"
+                    text: "PG"
+                    font_size: 14
+                    color: 1,1,1,1
+                    pos_hint:{"right":1, "y": 0}
+                MDLabel:
+                    size_hint: .85,None
+                    height: "15dp"
+                    text: "off: " + str(root.team.pg.off) + " | def: " +str(root.team.pg.deff) + " | reb: " + str(root.team.pg.reb) + " | 3pt: " + str(root.team.pg.att_three)
+                    font_size: 12
+                    color: 1,1,1,1
+                    pos_hint: {"x": 0, "y":0}
+                MDTextButton:
+                    size_hint: .15,None
+                    height:"15dp"
+                    font_size: "13sp"
+                    on_release: 
+                        root.manager.get_screen("edit_player").update(root.team.pg)
                         app.root.current = "edit_player"
                         root.manager.transition.direction = "up"
                         root.edit_player(root.team.pg)
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: pg_off_label
-                        text: root.pgoff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 75
-                        on_value: root.pg1_off_val(self)
-                        orientation: "horizontal"
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: pg_deff_label
-                        text: root.pgdeff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 80
-                        on_value: root.pg1_deff_val(self)
-                        orientation: "horizontal"
+                    text: "EDIT"
+                    color: app.theme_cls.primary_color
+
+                MDLabel:
+                    size_hint: .85,None
+                    height: "10dp"
+                    text: " "
+                MDLabel:
+                    size_hint: .15,None
+                    height: "10dp"
+                    text: " "
+
+                MDLabel:
+                    size_hint: .85,None
+                    height: "15dp"
+                    text: root.team.sg.name
+                    font_size: 14
+                    color: 1,1,1,1
+                    pos_hint: {"x": 0, "y":0}
+                MDLabel:
+                    size_hint: .15,None
+                    height: "15dp"
+                    text: "SG"
+                    font_size: 14
+                    color: 1,1,1,1
+                    pos_hint:{"right":1, "y": 0}
+                MDLabel:
+                    size_hint: .85,None
+                    height: "15dp"
+                    text: "off: " + str(root.team.sg.off) + " | def: " +str(root.team.sg.deff) + " | reb: " + str(root.team.sg.reb) + " | 3pt: " + str(root.team.sg.att_three)
+                    font_size: 12
+                    color: 1,1,1,1
+                    pos_hint: {"x": 0, "y":0}
+                MDTextButton:
+                    size_hint: .15,None
+                    height:"15dp"
+                    font_size: "13sp"
+                    on_release: 
+                        root.manager.get_screen("edit_player").update(root.team.sg)
+                        app.root.current = "edit_player"
+                        root.manager.transition.direction = "up"
+                        root.edit_player(root.team.sg)
+                    text: "EDIT"
+                    color: app.theme_cls.primary_color
+                
+
+                MDLabel:
+                    size_hint: .85,None
+                    height: "10dp"
+                    text: " "
+                MDLabel:
+                    size_hint: .15,None
+                    height: "10dp"
+                    text: " "
+
+                MDLabel:
+                    size_hint: .85,None
+                    height: "15dp"
+                    text: root.team.sf.name
+                    font_size: 14
+                    color: 1,1,1,1
+                    pos_hint: {"x": 0, "y":0}
+                MDLabel:
+                    size_hint: .15,None
+                    height: "15dp"
+                    text: "SF"
+                    font_size: 14
+                    color: 1,1,1,1
+                    pos_hint:{"right":1, "y": 0}
+                MDLabel:
+                    size_hint: .85,None
+                    height: "15dp"
+                    text: "off: " + str(root.team.sf.off) + " | def: " +str(root.team.sf.deff) + " | reb: " + str(root.team.sf.reb) + " | 3pt: " + str(root.team.sf.att_three)
+                    font_size: 12
+                    color: 1,1,1,1
+                    pos_hint: {"x": 0, "y":0}
+                MDTextButton:
+                    size_hint: .15,None
+                    height:"15dp"
+                    font_size: "13sp"
+                    on_release: 
+                        root.manager.get_screen("edit_player").update(root.team.sf)
+                        app.root.current = "edit_player"
+                        root.manager.transition.direction = "up"
+                        root.edit_player(root.team.sf)
+                    text: "EDIT"
+                    color: app.theme_cls.primary_color
+                
+                
+                    
+
+
+
+
+
+        BoxLayout:
+            id: pg1
+            orientation: "horizontal"
+            TextInput:
+                id: pg1_name
+                size_hint: .4, .4
+                hint_text: "Dee Dee Smith"
+                multiline: False
+                on_text: root.pg1_name_val(self)
+            MDRaisedButton:
+                text: "Advanced Edit"
+                on_release:
+                    root.manager.get_screen("edit_player").update(root.team.pg)
+                    app.root.current = "edit_player"
+                    root.manager.transition.direction = "up"
+                    root.edit_player(root.team.pg)
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: pg_off_label
+                    text: root.pgoff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 75
+                    on_value: root.pg1_off_val(self)
+                    orientation: "horizontal"
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: pg_deff_label
+                    text: root.pgdeff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 80
+                    on_value: root.pg1_deff_val(self)
+                    orientation: "horizontal"
+                
+        BoxLayout:
+            id: sg1
+            orientation: "horizontal"
+            TextInput:
+                id: sg1_name
+                size_hint: .4, .4
+                hint_text: "Roger Huntely"
+                multiline: False
+                on_text: root.sg1_name_val(self)
+            MDRaisedButton:
+                text: "Advanced Edit"
+                on_release:
+                    root.edit_player(root.team.sg)
+                    root.manager.get_screen("edit_player").update(root.team.sg)
+                    app.root.current = "edit_player"
+                    root.manager.transition.direction = "up"
                     
             BoxLayout:
-                id: sg1
-                orientation: "horizontal"
-                TextInput:
-                    id: sg1_name
-                    size_hint: .4, .4
-                    hint_text: "Roger Huntely"
-                    multiline: False
-                    on_text: root.sg1_name_val(self)
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: sg_off_label
-                        text: root.sgoff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 61
-                        on_value: root.sg1_off_val(self)
-                        orientation: "horizontal"
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: sg_deff_label
-                        text: root.sgdeff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 80
-                        on_value: root.sg1_deff_val(self)
-                        orientation: "horizontal"
-
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: sg_off_label
+                    text: root.sgoff
+                    
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 61
+                    on_value: root.sg1_off_val(self)
+                    orientation: "horizontal"
             BoxLayout:
-                id: sf1
-                orientation: "horizontal"
-                TextInput:
-                    id: sf1_name
-                    size_hint: .4, .4
-                    hint_text: "Malcolm Smith"
-                    multiline: False
-                    on_text: root.sf1_name_val(self)
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: sf_off_label
-                        text: root.sfoff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 61
-                        on_value: root.sf1_off_val(self)
-                        orientation: "horizontal"
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: sf_deff_label
-                        text: root.sfdeff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 80
-                        on_value: root.sf1_deff_val(self)
-                        orientation: "horizontal"
-        
-            BoxLayout:
-                id: pf1
-                orientation: "horizontal"
-                TextInput:
-                    id: pf1_name
-                    size_hint: .4, .4
-                    hint_text: "George Fant"
-                    multiline: False
-                    on_text: root.pf1_name_val(self)
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: pf_off_label
-                        text: root.pfoff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 79
-                        on_value: root.pf1_off_val(self)
-                        orientation: "horizontal"
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: pf_deff_label
-                        text: root.pfdeff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 80
-                        on_value: root.pf1_deff_val(self)
-                        orientation: "horizontal"
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: sg_deff_label
+                    text: root.sgdeff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 80
+                    on_value: root.sg1_deff_val(self)
+                    orientation: "horizontal"
 
-            BoxLayout:
-                id: c1
-                orientation: "horizontal"
-                TextInput:
-                    id: c1_name
-                    size_hint: .4, .4
-                    hint_text: "Alex Poythresse"
-                    multiline: False
-                    on_text: root.c1_name_val(self)
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: c_off_label
-                        text: root.coff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 88
-                        on_value: root.c1_off_val(self)
-                        orientation: "horizontal"
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint: .3,1
-                    Label:
-                        id: c_deff_label
-                        text: root.cdeff
-                    MDSlider:
-                        id: my_slider
-                        size_hint: 1,.5
-                        min: 1
-                        max: 99
-                        value: 80
-                        on_value: root.c1_deff_val(self)
-                        orientation: "horizontal"
-            #MDLabel:
-                #text: "Team Overall Rating: " + str(root.overall) 
-            #MDLabel:
-                #text: "Opponent Overall Rating: " + str(root.overall2) 
+        BoxLayout:
+            id: sf1
+            orientation: "horizontal"
+            TextInput:
+                id: sf1_name
+                size_hint: .4, .4
+                hint_text: "Malcolm Smith"
+                multiline: False
+                on_text: root.sf1_name_val(self)
 
-            MDFloatLayout:
-                #size: 1 , 1
-                MDIconButton:
-                    icon: "home-variant"
-                    on_release:
-                        app.root.current = "start"
-                        root.manager.transition.direction = "right"
-                MDRaisedButton:
-                    text: "Coaching Settings"
-                    pos_hint: {"center_x": .4, "center_y": .2}
-                    on_release:
-                        pass
-                MDIconButton:
-                    icon: "play-box-outline"
-                    pos_hint: {"right": .95, "bottom": .1}
-                    on_release:
-                        root.sim()
-                        app.root.current = "results"
-                        root.manager.transition.direction = "left"
-                MDIconButton:
-                    icon: "cog"
-                    pos_hint: {"right": .8, "bottom": .1}
-                    on_release:
-                        root.sim()
-                        app.root.current = "settings"
-                        root.manager.transition.direction = "down"
+            MDRaisedButton:
+                text: "Advanced Edit"
+                on_release:
+                    root.edit_player(root.team.sf)
+                    root.manager.get_screen("edit_player").update(root.team.sf)
+                    app.root.current = "edit_player"
+                    root.manager.transition.direction = "up"
+            
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: sf_off_label
+                    text: root.sfoff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 61
+                    on_value: root.sf1_off_val(self)
+                    orientation: "horizontal"
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: sf_deff_label
+                    text: root.sfdeff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 80
+                    on_value: root.sf1_deff_val(self)
+                    orientation: "horizontal"
+
+        BoxLayout:
+            id: pf1
+            orientation: "horizontal"
+            TextInput:
+                id: pf1_name
+                size_hint: .4, .4
+                hint_text: "George Fant"
+                multiline: False
+                on_text: root.pf1_name_val(self)
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: pf_off_label
+                    text: root.pfoff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 79
+                    on_value: root.pf1_off_val(self)
+                    orientation: "horizontal"
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: pf_deff_label
+                    text: root.pfdeff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 80
+                    on_value: root.pf1_deff_val(self)
+                    orientation: "horizontal"
+
+        BoxLayout:
+            id: c1
+            orientation: "horizontal"
+            TextInput:
+                id: c1_name
+                size_hint: .4, .4
+                hint_text: "Alex Poythresse"
+                multiline: False
+                on_text: root.c1_name_val(self)
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: c_off_label
+                    text: root.coff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 88
+                    on_value: root.c1_off_val(self)
+                    orientation: "horizontal"
+            BoxLayout:
+                orientation: "vertical"
+                size_hint: .3,1
+                Label:
+                    id: c_deff_label
+                    text: root.cdeff
+                MDSlider:
+                    id: my_slider
+                    size_hint: 1,.5
+                    min: 1
+                    max: 99
+                    value: 80
+                    on_value: root.c1_deff_val(self)
+                    orientation: "horizontal"
+        #MDLabel:
+            #text: "Team Overall Rating: " + str(root.overall) 
+        #MDLabel:
+            #text: "Opponent Overall Rating: " + str(root.overall2) 
+
+        MDFloatLayout:
+            #size: 1 , 1
+            MDIconButton:
+                icon: "home-variant"
+                on_release:
+                    app.root.current = "start"
+                    root.manager.transition.direction = "right"
+            MDRaisedButton:
+                text: "Coaching Settings"
+                pos_hint: {"center_x": .4, "center_y": .2}
+                on_release:
+                    pass
+            MDIconButton:
+                icon: "play-box-outline"
+                pos_hint: {"right": .95, "bottom": .1}
+                on_release:
+                    root.sim()
+                    app.root.current = "results"
+                    root.manager.transition.direction = "left"
+            MDIconButton:
+                icon: "cog"
+                pos_hint: {"right": .8, "bottom": .1}
+                on_release:
+                    root.sim()
+                    app.root.current = "settings"
+                    root.manager.transition.direction = "down"
 
 
 <SettingsPage>:
@@ -537,11 +700,166 @@ WindowManager:
     GridLayout:
         cols: 1
         size_hint: 1,1
-        MDTextField:
-            hint_text: "Dee Dee Smith"
-            helper_text: "Player Name"
-            helper_text_mode: "persistent"
-            max_text_length: 25
-        MDLabel:
-            text: "Offense:"
+        spacing: "10dp"
+        padding: "8dp"
+        
+        MD3Card:
+            size_hint: 1, None
+            height: "60dp"
+            padding: 10
+            md_bg_color: .9,.9,.9,1
+            MDTextField:
+                color: 0,0,0,1
+                id: "player_name"
+                on_text: root.on_name_input(self)
+                hint_text: root.player_name
+                helper_text: "Player Name"
+                helper_text_mode: "persistent"
+                max_text_length: 25
+                
+                
 
+        MD3Card:
+            orientation: "vertical"
+            size_hint: 1, None
+            height: "60dp"
+            padding: 10
+            spacing: 5
+            md_bg_color: app.theme_cls.primary_light
+            BoxLayout:
+                MDLabel:
+                    text: "Offense"
+                    font_size: 14
+                    size_hint:.32, None
+                    height: "20"
+                MDSlider:
+                    id: "off_slider"
+                    on_value: root.on_off_slider(self)
+                    hint_bg_color: 1,1,1,1
+                    value: 70
+            MDLabel:
+                text: "The \"offense\" attribute currently is associated with 2-pt shots and the likelihood of commiting a turnover." 
+                color: 0,0,0,.5
+                italic: True
+                font_size: 12
+           
+        MD3Card:
+            orientation: "vertical"
+            size_hint: 1, None
+            height: "60dp"
+            padding: 10
+            spacing: 5
+            md_bg_color: app.theme_cls.primary_light
+            BoxLayout:
+                MDLabel:
+                    text: "Defense"
+                    font_size: 14
+                    size_hint:.32, None
+                    height: "20"
+                MDSlider:
+                    id: "deff_slider"
+                    on_value: root.on_deff_slider(self)
+                    hint_bg_color: 1,1,1,1
+                    value: 70
+            MDLabel:
+                text: "The \"defense\" attribute currently is associated with defending 2 & 3 pt shots as well as the likelihood of creating a turnover." 
+                color: 0,0,0,.5
+                italic: True
+                font_size: 12
+
+        MD3Card:
+            orientation: "vertical"
+            size_hint: 1, None
+            height: "60dp"
+            padding: 10
+            spacing: 5
+            md_bg_color: app.theme_cls.primary_light
+            BoxLayout:
+                MDLabel:
+                    text: "Rebounding"
+                    font_size: 14
+                    size_hint:.32, None
+                    height: "20"
+                MDSlider:
+                    id: "reb_slider"
+                    on_value: root.on_rebounding_slider(self)
+                    hint_bg_color: 1,1,1,1
+                    value: 70
+            MDLabel:
+                text: "\"Rebounding\", along with \"height\", increases the chance of this player to rebound a missed shot."
+                color: 0,0,0,.5
+                italic: True
+                font_size: 12
+
+        MD3Card:
+            orientation: "vertical"
+            size_hint: 1, None
+            height: "50dp"
+            padding: 10
+            spacing: 5
+            md_bg_color: app.theme_cls.primary_light
+            BoxLayout:
+                MDLabel:
+                    text: "Long Range"
+                    font_size: 13
+                    size_hint:.32, None
+                    height: "20"
+                MDSlider:
+                    id: "long_range_slider"
+                    on_value: root.on_three_slider(self)
+                    hint_bg_color: 1,1,1,1
+                    value: 70
+            MDLabel:
+                text: "\"Long Range\" is how good the player is at shooting threes."
+                color: 0,0,0,.5
+                italic: True
+                font_size: 12
+
+        MD3Card:
+            orientation: "vertical"
+            size_hint: 1, None
+            height: "86dp"
+            padding: 10
+            spacing: 5
+            elevation: 20
+            md_bg_color: app.theme_cls.primary_light
+            MDLabel:
+                text: "Long Range Bias"
+                pos_hint: {"center_x": .5, "bottom":0} 
+                font_size: 14
+                size_hint:.5, None
+                height: "14dp"
+            MDSlider:
+                id: "bias_slider"
+                on_value: root.on_three_dist_slider(self)
+                hint_bg_color: 1,1,1,1
+                value: 15
+            MDLabel:
+                text: "\"Long Range Bias\" is the percentage of this player\'s shots that will be three pointers."
+                color: 0,0,0,.5
+                italic: True
+                font_size: 12
+
+
+    MDLabel:
+        size_hint: .22, None
+        height: "20dp"
+        pos_hint: {"right": 1, "top": .99}
+        text: "Starting " + root.player_position
+        font_size: 12
+
+    MDRoundFlatIconButton:
+        icon: "check"
+        text: "Accept"
+        pos_hint: {"x": .5, "y": .03}
+        on_release:
+            root.save()
+            app.root.current = "team"
+            root.manager.transition.direction = "down"
+    MDRoundFlatButton:
+        text: "Cancel"
+        pos_hint: {"right": .47, "y": .03}
+        on_release:
+            app.root.current = "team"
+            root.manager.transition.direction = "down"
+            print(root.off_slider)
