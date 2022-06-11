@@ -9,6 +9,8 @@ from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 from kivymd.uix.card import MDCard
 from kivy.utils import get_color_from_hex
 from kivy.core.window import Window
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 
 Window.size = (360,700)
 
@@ -607,6 +609,7 @@ class PostStatsPage(Screen, MDAdaptiveWidget):
         self.threes4 = str(team.pf.three_made) + "/" +str(team.pf.three_attempt)
         self.threes5 = str(team.c.three_made) + "/" +str(team.c.three_attempt)
         
+    
 
 
 class InfoPage(Screen, MDAdaptiveWidget):
@@ -701,7 +704,20 @@ class TestApp(MDApp):
         self.att_three3 = main_team.sf.att_three
         self.att_three4 = main_team.pf.att_three
         self.att_three5 = main_team.c.att_three
-        
+
+    dialog = None
+    def show_att(self, pos):
+        if not self.dialog:
+            if pos == 1:
+                self.dialog = MDDialog(
+                    text= "off: " + str(self.off1) + " | def: " + str(self.deff1) + " | reb: " + str(self.reb1) + " | 3pt: " + str(self.att_three1))
+            elif pos ==2:
+                self.dialog = MDDialog(
+                    text= "off: " + str(self.off2) + " | def: " + str(self.deff2) + " | reb: " + str(self.reb2) + " | 3pt: " + str(self.att_three2)
+                
+            )
+        self.dialog.open()
+        self.dialog = None
 
 
 

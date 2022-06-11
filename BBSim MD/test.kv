@@ -499,10 +499,13 @@ WindowManager:
                     md_bg_color: app.theme_cls.primary_color
                     ThreeLineAvatarIconListItem:
                         text: root.name1
+                        on_release: 
+                            app.show_att(1)
                         secondary_text: "P: [color=#FFFFFF]" + root.stats1 + "[/color]  R: [color=#FFFFFF]" + root.rebs1
                         tertiary_text: "FG: [color=#FFFFFF]" + root.fg1 + "[/color]  3P: [color=#FFFFFF]" + root.threes1
                         ImageLeftWidget:
                             source: "image1.png"
+                        
 
                 MD3Card:
                     orientation: "horizontal"
@@ -515,6 +518,8 @@ WindowManager:
                     md_bg_color: app.theme_cls.primary_color
                     ThreeLineAvatarIconListItem:
                         text: root.name2
+                        on_release: 
+                            app.show_att(2)
                         secondary_text: "P: [color=#FFFFFF]" + root.stats2 + "[/color]  R: [color=#FFFFFF]" + root.rebs2
                         tertiary_text: "FG: [color=#FFFFFF]" + root.fg2 + "[/color]  3P: [color=#FFFFFF]" + root.threes2
                         ImageLeftWidget:
