@@ -330,7 +330,8 @@ class WindowManager(ScreenManager):
 ########################## SCREENS!!! ############
 
 class StartPage(Screen, MDAdaptiveWidget):
-    pass
+    user = team1
+    ai = team2
 
 class TeamPage(Screen, MDAdaptiveWidget):
 
@@ -465,7 +466,7 @@ class TeamPage(Screen, MDAdaptiveWidget):
         game.play()
         self.manager.get_screen("results").final_score = (str(team1.score) + " - " + str(team2.score))
         self.manager.get_screen("results").record = (str(game.hw) + " - " + str(game.aw))
-
+        self.manager.get_screen("post_stats").update(0)
 ######################################################################################################################
 ############################################### Results ##############################################################
 ######################################################################################################################
@@ -524,15 +525,14 @@ class ResultsPage(Screen, MDAdaptiveWidget):
     final_score = StringProperty(str(team1.score))
     record = StringProperty(" ")
 
-    def update_stats(self,n):
-        u =self.manager.get_screen("post_stats")
-        u.update(n)
+
         
         
 
 class SettingsPage(Screen, MDAdaptiveWidget):
     def series(self, x):
         game.series = x
+
 
 
 class PostStatsPage(Screen, MDAdaptiveWidget):
@@ -579,7 +579,7 @@ class PostStatsPage(Screen, MDAdaptiveWidget):
             self.opp_name = teams[1].name
         else:
             self.opp_name = teams[0].name
-        self.name = team.name
+        self.team_name = team.name
         self.score = (str(team1.score) + " - " + str(team2.score))
         self.name1 = team.pg.name
         self.name2 = team.sg.name
@@ -609,7 +609,6 @@ class PostStatsPage(Screen, MDAdaptiveWidget):
         
 
 
-
 class InfoPage(Screen, MDAdaptiveWidget):
     text1 = """Thank you for taking the time to test this application. There's a TON of formulas and algorithms to iron out in order to accurately simulate a basketball game. I could spend \
 all my time testing and analyzing different combination outcomes just in the game's current state, so any and all feedback from you is valuable. 
@@ -633,6 +632,76 @@ class TestApp(MDApp):
         #self.theme_cls.theme_style="Dark"
         #return Builder.load_file('test.kv')
 
+    main_team = ObjectProperty(None)
+    secondary_team = ObjectProperty(None)
+    main_team_name = main_team.name
+    secondary_team_name = secondary_team.name
+    name1 = StringProperty(team1.pg.name)
+    name2 = StringProperty(team1.sg.name)
+    name3 = StringProperty(team1.sf.name)
+    name4 = StringProperty(team1.pf.name)
+    name5 = StringProperty(team1.c.name)
+
+    off1 = NumericProperty(0)
+    off2 = NumericProperty(0)
+    off3 = NumericProperty(0)
+    off4 = NumericProperty(0)
+    off5 = NumericProperty(0)
+
+    deff1 = NumericProperty(0)
+    deff2 = NumericProperty(0)
+    deff3 = NumericProperty(0)
+    deff4 = NumericProperty(0)
+    deff5 = NumericProperty(0)
+
+    reb1 = NumericProperty(0)
+    reb2 = NumericProperty(0)
+    reb3 = NumericProperty(0)
+    reb4 = NumericProperty(0)
+    reb5 = NumericProperty(0)
+
+    att_three1 = NumericProperty(0)
+    att_three2 = NumericProperty(0)
+    att_three3 = NumericProperty(0)
+    att_three4 = NumericProperty(0)
+    att_three5 = NumericProperty(0)
+
+    
+    
+
+    def update(self,main_team, secondary_team):
+        self.main_team = main_team
+        self.secondary_team = secondary_team
+        self.name1 = main_team.pg.name
+        self.name2 = main_team.sg.name
+        self.name3 = main_team.sf.name
+        self.name4 = main_team.pf.name
+        self.name5 = main_team.c.name
+        
+        self.off1 = main_team.pg.off
+        self.off2 = main_team.sg.off
+        self.off3 = main_team.sf.off
+        self.off4 = main_team.pf.off
+        self.off5 = main_team.c.off
+
+        self.deff1 = main_team.pg.deff
+        self.deff2 = main_team.sg.deff
+        self.deff3 = main_team.sf.deff
+        self.deff4 = main_team.pf.deff
+        self.deff5 = main_team.c.deff
+
+        self.reb1 = main_team.pg.reb
+        self.reb2 = main_team.sg.reb
+        self.reb3 = main_team.sf.reb
+        self.reb4 = main_team.pf.reb
+        self.reb5 = main_team.c.reb
+
+        self.att_three1 = main_team.pg.att_three
+        self.att_three2 = main_team.sg.att_three
+        self.att_three3 = main_team.sf.att_three
+        self.att_three4 = main_team.pf.att_three
+        self.att_three5 = main_team.c.att_three
+        
 
 
 
